@@ -1,8 +1,7 @@
 # Kotlin 大法好 ! 
-### Kotlin さいこう ! 
-### Kotlin 훌륭해야! 
+##### Kotlin さいこう ! Kotlin 훌륭해요! 
 
-#Servlet Project 
+# Servlet Project 
 
 first version
 
