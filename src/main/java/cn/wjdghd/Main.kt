@@ -45,7 +45,6 @@ class Main : HttpServlet() {
         @Throws(ServletException::class, IOException::class)
         override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
             response.setPostHeadersForPage()
-            println(request.getParameter("table"))
             deleteTableRow(request, response)
         }
         @Throws(ServletException::class, IOException::class)
