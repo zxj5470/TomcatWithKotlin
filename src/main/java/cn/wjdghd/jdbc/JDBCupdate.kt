@@ -7,7 +7,6 @@ fun updateCourseInfo(course: Course): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
     val rs = statement.execute("INSERT INTO tCourse VALUES('${course.couId}','${course.couName}','${course.couScore}','${course.couTime}','${course.couCurNum}','${course.couMaxNum}')")
-    val re = statement.execute("UPDATE tStudent SET ")
     JDBCUtil.closeConn()
     return rs
 }
@@ -31,7 +30,7 @@ fun updateStudentInfo(student: Student): Boolean {
 }
 
 
-fun updateStuSelectInfo(selectTable: SelectTable): Boolean {
+fun updateStuSelectInfo(selectTable: StuSelect): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
     val rs = statement.execute(

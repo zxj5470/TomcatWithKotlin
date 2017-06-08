@@ -23,9 +23,9 @@ data class Faculty(var facId: String,
                    var facTel: String,
                    var facBoss: String)
 
-data class SelectTable(var selStuId: String,
+data class StuSelect(var selStuId: String,
                        var selCouId: String,
-                       var selStuScore: String)
+                       var selStuScore: Int)
 
 data class TeachTable(var teaTeaId: String,
                       var teaCouId: String)

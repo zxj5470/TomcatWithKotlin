@@ -10,7 +10,6 @@ class JDBCUtil {
         val userName = "sa"
         val userPwd = "zxj5470"
         var dbConn: Connection? = null //define a nullable object for connection
-
         //获取数据库连接
         fun getConn() {
             Class.forName(driverName)
