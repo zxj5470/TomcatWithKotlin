@@ -51,11 +51,11 @@ fun insertTeacherInfo(teacher: Teacher): Boolean {
     return rs
 }
 
-fun insertTeaSelectInfo(teachTable: TeachTable):Boolean{
+fun insertTeaSelectInfo(teachSelect: TeachSelect):Boolean{
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
     val rs = statement.execute(
-            "INSERT INTO tFaculty VALUES('${teachTable.teaCouId}','${teachTable.teaCouId}')")
+            "INSERT INTO tFaculty VALUES('${teachSelect.teaCouId}','${teachSelect.teaCouId}')")
     JDBCUtil.closeConn()
     return rs
 }

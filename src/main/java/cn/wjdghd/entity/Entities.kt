@@ -27,5 +27,5 @@ data class StuSelect(var selStuId: String,
                        var selCouId: String,
                        var selStuScore: Int)
 
-data class TeachTable(var teaTeaId: String,
-                      var teaCouId: String)
+data class TeachSelect(var teaTeaId: String,
+                       var teaCouId: String)
