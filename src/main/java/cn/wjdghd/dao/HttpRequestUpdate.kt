@@ -41,7 +41,6 @@ fun updateTableRow(request: HttpServletRequest, response: HttpServletResponse) {
 
             val student = Student(stuId, stuName, stuSex, stuBirth, stuClass)
             updateStudentInfo(student,ID)
-
             response.writer.println(student)
         }
         "tStuSelect" -> {
@@ -51,7 +50,6 @@ fun updateTableRow(request: HttpServletRequest, response: HttpServletResponse) {
 
             val stuSelect = StuSelect(stuId, stuName, selStuScore)
             updateStuSelectInfo(stuSelect)
-
             response.writer.println(stuSelect)
         }
         "tTeacher" -> {

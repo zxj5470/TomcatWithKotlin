@@ -1,5 +1,6 @@
 package cn.wjdghd
 
+import cn.wjdghd.dao.deleteTableRow
 import cn.wjdghd.dao.insertTableRow
 import cn.wjdghd.dao.selectTableNameAndResponse
 import java.io.IOException
@@ -36,6 +37,21 @@ class Main : HttpServlet() {
         override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
             response.setPostHeadersForPage()
 
+        }
+    }
+
+    @WebServlet("/delete")
+    class Delete : HttpServlet() {
+        @Throws(ServletException::class, IOException::class)
+        override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
+            response.setPostHeadersForPage()
+            println(request.getParameter("table"))
+            deleteTableRow(request, response)
+        }
+        @Throws(ServletException::class, IOException::class)
+        override fun doGet(request: HttpServletRequest, response: HttpServletResponse) {
+            response.setGetHeadersForPage()
+            response.writer.println(23333)
         }
     }
 
