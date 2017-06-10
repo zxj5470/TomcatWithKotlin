@@ -50,7 +50,7 @@ fun deleteTeacher(teaId: String): Boolean {
 fun deleteTeaSelect(teaTeaId: String, teaCouId: String): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val sql = "DELETE FROM tTeaSelect WHERE teaTeaId='$teaTeaId' and teaCouId='teaCouId'"
+    val sql = "DELETE FROM tTeaSelect WHERE teaTeaId='$teaTeaId' and teaCouId='$teaCouId'"
     val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs

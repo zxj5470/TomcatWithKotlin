@@ -1,6 +1,5 @@
 package cn.wjdghd.jdbc
 
-import cn.wjdghd.entity.CONST
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import java.sql.Connection
@@ -21,16 +20,16 @@ fun selectFromAll(tableName: String): JsonObject {
         val ob = JsonObject()
         //adapt to each type
         columnTypesNamesMap.map { (k, v) ->
-            val getChinese= CONST.get().englishToChinese[k]
+//            val getChinese= CONST.get().englishToChinese[k]
             when (v) {
-                "text" -> ob.addProperty(getChinese, rs.getString(k))
-                "varchar" -> ob.addProperty(getChinese, rs.getString(k))
-                "decimal" -> ob.addProperty(getChinese, rs.getBigDecimal(k))
-                "smallint" -> ob.addProperty(getChinese, rs.getInt(k))
-                "integer" -> ob.addProperty(getChinese, rs.getInt(k))
-                "bigint" -> ob.addProperty(getChinese, rs.getLong(k))
-                "float" -> ob.addProperty(getChinese, rs.getFloat(k))
-                "double" -> ob.addProperty(getChinese, rs.getDouble(k))
+                "text" -> ob.addProperty(k, rs.getString(k))
+                "varchar" -> ob.addProperty(k, rs.getString(k))
+                "decimal" -> ob.addProperty(k, rs.getBigDecimal(k))
+                "smallint" -> ob.addProperty(k, rs.getInt(k))
+                "integer" -> ob.addProperty(k, rs.getInt(k))
+                "bigint" -> ob.addProperty(k, rs.getLong(k))
+                "float" -> ob.addProperty(k, rs.getFloat(k))
+                "double" -> ob.addProperty(k, rs.getDouble(k))
             }
         }
         array.add(ob)
