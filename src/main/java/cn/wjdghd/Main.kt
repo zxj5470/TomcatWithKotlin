@@ -1,14 +1,11 @@
 package cn.wjdghd
 
-import cn.wjdghd.dao.deleteTableRow
-import cn.wjdghd.dao.insertTableRow
-import cn.wjdghd.dao.selectTableNameAndResponse
+import cn.wjdghd.dao.*
+
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.annotation.WebServlet
-import javax.servlet.http.HttpServlet
-import javax.servlet.http.HttpServletRequest
-import javax.servlet.http.HttpServletResponse
+import javax.servlet.http.*
 
 class Main : HttpServlet() {
 
@@ -53,6 +50,7 @@ fun HttpServletResponse.setGetHeadersForPage() {
     this.setHeader("Access-Control-Allow-Origin", "*")
     this.setHeader("Access-Control-Allow-Methods", "GET")
     this.setHeader("Access-Control-Allow-Headers", "x-requested-with,content-type")
+
 }
 
 fun HttpServletResponse.setPostHeadersForPage() {

@@ -20,5 +20,4 @@ class JDBCUtil {
             dbConn!!.close()
         }
     }
-
 }

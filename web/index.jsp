@@ -13,14 +13,17 @@
     <link rel="stylesheet" href="./WebContent/css/bootstrap.min.css">
     <link rel="stylesheet" href="./WebContent/css/bootstrap-table.css">
     <link rel="stylesheet" href="./WebContent/css/bootstrap-editable.css">
-    <link rel="stylesheet" href="./WebContent/extensions/click-edit-row/bootstrap-table-click-edit-row.css">
 
     <script src="./WebContent/js/jquery.min.js"></script>
+
     <script src="./WebContent/js/bootstrap.js"></script>
+    <script src="./WebContent/js/bootstrap-editable.min.js"></script>
     <script src="./WebContent/js/bootstrap-table.js"></script>
     <script src="./WebContent/locale/bootstrap-table-zh-CN.js"></script>
-    <script src="./WebContent/js/bootstrap-editable.min.js"></script>
-    <script src="./WebContent/extensions/click-edit-row/bootstrap-table-click-edit-row.js"></script>
+
+    <script src="./WebContent/zh.js"></script>
+
+
 </head>
 <body>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -55,19 +58,19 @@
             <HR align="left"><!--------------分隔符--------------->
 
             <ul class="nav nav-sidebar">
-                <li><a href="#ejb" class="btn btn-default" data-toggle="tab">Another nav item</a></li>
+                <li><a href="#ejb" class="btn btn-default"
+                       data-toggle="tab">各种管理</a></li>
                 <p></p>
-                <li><a href="" class="btn btn-default">More navigation</a></li>
+                <li><a href="" class="btn btn-default">各种查询</a></li>
             </ul>
 
             <HR align="left"><!--------------分隔符--------------->
             <ul class="nav nav-sidebar">
-                <li><a href="" class="btn btn-default">One more nav</a></li>
+                <li><a href="" class="btn btn-default">各种信息</a></li>
                 <p></p>
-                <li><a href="" class="btn btn-default">Another nav item</a></li>
+                <li><a href="" class="btn btn-default">各种内容</a></li>
             </ul>
         </div>
-
         <div id="myTabContent" class="col-sm-10 col-md-10 tab-content">
             <a href=""></a><br/><a href=""></a><br/>
             <div class="tab-pane in active center-block text-primary" id="Main">
@@ -78,14 +81,18 @@
             </div>
             <div class="tab-pane fade panel-default" id="student">
                 <div class="panel-heading"><strong>学生信息管理</strong></div>
-                <table id="studentTable" class="table" data-click-edit="true">
-                    <thead id="studentTableHead">
+                <table id="studentTable"
+                       class="table">
+                    <thead>
                     <tr>
-                        <td data-field="stuName" data-editable="input"></td>
+                        <th data-field="index"></th>
+                        <th data-field="stuId" data-editable="true">学号</th>
+                        <th data-field="stuName" data-editable="true">姓名</th>
+                        <th data-field="stuSex" data-editable="true">性别</th>
+                        <th data-field="stuBirth" data-editable="true">生日</th>
+                        <th data-field="stuClass" data-editable="true">班级</th>
                     </tr>
                     </thead>
-                    <tbody id="studentTableBody">
-                    </tbody>
                 </table>
             </div>
             <div class="panel panel-default fade" id="teacher">
@@ -104,6 +111,9 @@
 </div>
 <script>
     var curRow = {};
+
+    var $table = $('#studentTable');
+
     $(function () {
         $.ajax({
             url: 'gou.json',
@@ -118,20 +128,16 @@
             }
         });
     });
+
     function setOption(ob) {
         return {
             url: ob,
             editable: true,
             clickToSelect: true,
             cache: false,
-            pageList: [10, 25, 50, 100],
-            pageSize: 10,
-            pageNumber: 1,
-            uniqueId: 'index',
             striped: true,
             search: true,
             showRefresh: true,
-            minimumCountColumns: 2,
             smartDisplay: true,
             columns: [
                 [
@@ -150,25 +156,25 @@
                         order: "asc",
                         sortable: "true",
                         editable: {
-                            type: 'text',
-                            title: '姓名',
-                            validate: function (v) {
-                            }
+                            type: "text"
                         }
                     },
                     {
                         field: "stuId", title: "学号", align: "left", sortable: "true"
                     },
-                    {field: "stuSex", title: "性别", align: "left", sortable: "true",
-                        editable: {
-                        type: 'select',
-                        title: 'Sex',
-                        validate: function (v) {
-                            console.log(v);
-                        }
-                    }},
+                    {
+                        field: "stuSex", title: "性别", align: "left", sortable: "true"
+                    },
                     {field: "stuBirth", title: "出生日期", align: "left", sortable: "true"},
-                    {field: "stuClass", title: "所属班级", align: "left", sortable: "true"}
+                    {field: "stuClass", title: "所属班级", align: "left", sortable: "true"},
+                    {
+                        field: 'operate',
+                        title: 'Item Operate',
+                        align: 'center',
+                        events: operateEvents,
+                        formatter: operateFormatter
+                    }
+
                 ]
             ],
             onClickRow: function (row) {
@@ -177,16 +183,54 @@
             }
         };
     }
+
+    window.operateEvents = {
+//        'click .edit': function (e, value, row, index) {
+//        },
+        'click .remove': function (e, value, row, index) {
+            var msg=confirm("确认要删除这条记录吗？"+StuInfoToString(row));
+            if(msg===true){
+                $table.bootstrapTable('remove', {
+                    field: 'index',
+                    values: [row.index]
+                });
+                deleteStudent(row);
+            }
+        }
+    };
+    function operateFormatter(value, row, index) {
+        return [
+            '<a class="edit" href="javascript:void(0)" title="Edit">',
+            '<i class="glyphicon glyphicon-edit"></i>',
+            '</a>&nbsp;&nbsp;',
+            '<a class="remove" href="javascript:void(0)" title="Remove">',
+            '<i class="glyphicon glyphicon-remove"></i>',
+            '</a>'
+        ].join('');
+    }
+
     function todo() {
         var url = 'http://localhost:8080/query?table=tStudent';
-        $('#studentTable').bootstrapTable(setOption(url));
-        $('#studentTable').bootstrapTable('refresh', {
+        $table.bootstrapTable(setOption(url));
+        $table.bootstrapTable('refresh', {
             url: url
         });
     }
+
     $(window).resize(function () {
         $('#studentTable').bootstrapTable('resetView');
     });
+
+    function StuInfoToString(row){
+        var r="\n";
+        r+=("\n学号："+row.stuId);
+        r+=("\n姓名："+row.stuName);
+        r+=("\n性别："+row.stuSex);
+        r+=("\n生日："+row.stuBirth);
+        r+=("\n班级："+row.stuClass);
+        return r;
+    }
 </script>
+
 </body>
 </html>
