@@ -60,7 +60,7 @@ CREATE TABLE tTeaSelect (
 );
 
 --insert Students
-INSERT INTO tStudent VALUES ('1215001295','刘信哲','男','1990','1142');
+INSERT INTO tStudent VALUES ('2017002017','刘信哲','男','1990','1142');
 INSERT INTO tStudent VALUES ('1215002387','张佳文','女','19961004','1142');
 INSERT INTO tStudent VALUES ('1215001296','李茹','女','19970308','1142');
 
@@ -84,11 +84,11 @@ INSERT INTO tCourse VALUES ('21212711', '高等数学', 5, '1-8周，星期一7-
 INSERT INTO tCourse VALUES ('21212801', '线性代数', 4, '1-8周，星期一5-6节', 120, 118);
 
 --insert StuSelect
-INSERT INTO tStuSelect VALUES('1215001295','21212801',80)
+INSERT INTO tStuSelect VALUES('2017002017','21212801',80)
 
 --insert TeaSelect
 
 
 --test
-DELETE FROM tStuSelect WHERE tStuSelect.selStuId='1215001295'
-INSERT INTO tStuSelect VALUES ('1215001295','21212711',88)
+DELETE FROM tStuSelect WHERE tStuSelect.selStuId='2017002017'
+INSERT INTO tStuSelect VALUES ('2017002017','21212711',88)
