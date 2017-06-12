@@ -85,12 +85,12 @@
                        class="table">
                     <thead>
                     <tr>
-                        <th data-field="index"></th>
-                        <th data-field="stuId" data-editable="true">学号</th>
-                        <th data-field="stuName" data-editable="true">姓名</th>
-                        <th data-field="stuSex" data-editable="true">性别</th>
-                        <th data-field="stuBirth" data-editable="true">生日</th>
-                        <th data-field="stuClass" data-editable="true">班级</th>
+                        <th data-field="index" data-editable="false"></th>
+                        <th data-field="stuId" data-editable="text">学号</th>
+                        <th data-field="stuName" data-editable="text">姓名</th>
+                        <th data-field="stuSex" data-editable="select">性别</th>
+                        <th data-field="stuBirth" data-editable="selectDate">生日</th>
+                        <th data-field="stuClass" data-editable="text">班级</th>
                     </tr>
                     </thead>
                 </table>
@@ -144,7 +144,7 @@
                     {
                         field: "index",
                         title: "序号",
-                        align: "left",
+                        align: "center",
                         formatter: function (value, row, index) {
                             return row.index = index + 1;
                         }
@@ -152,24 +152,22 @@
                     {
                         field: "stuName",
                         title: "姓名",
-                        align: "left",
+                        align: "center",
                         order: "asc",
                         sortable: "true",
-                        editable: {
-                            type: "text"
-                        }
+                        formatter:simpleTextFormatter
                     },
                     {
-                        field: "stuId", title: "学号", align: "left", sortable: "true"
+                        field: "stuId", title: "学号", align: "center", sortable: "true"
                     },
                     {
-                        field: "stuSex", title: "性别", align: "left", sortable: "true"
+                        field: "stuSex", title: "性别", align: "center", sortable: "true"
                     },
-                    {field: "stuBirth", title: "出生日期", align: "left", sortable: "true"},
-                    {field: "stuClass", title: "所属班级", align: "left", sortable: "true"},
+                    {field: "stuBirth", title: "出生日期", align: "center", sortable: "true"},
+                    {field: "stuClass", title: "所属班级", align: "center", sortable: "true"},
                     {
                         field: 'operate',
-                        title: 'Item Operate',
+                        title: '工具栏',
                         align: 'center',
                         events: operateEvents,
                         formatter: operateFormatter
@@ -179,27 +177,51 @@
             ],
             onClickRow: function (row) {
                 curRow = row;
+//                console.log(row);
+            },
+            onDblClickCell: function (field, value, row, $element) {
+                console.log(field);
+                console.log(value);
                 console.log(row);
+                console.log($element);
             }
         };
     }
 
     window.operateEvents = {
-//        'click .edit': function (e, value, row, index) {
-//        },
+        'click .edit': function (e, value, row, index) {
+            isEditing=!isEditing;
+//            update(this, index);
+            console.log(this);
+            $table.bootstrapTable('refresh')
+        },
         'click .remove': function (e, value, row, index) {
-            var msg=confirm("确认要删除这条记录吗？"+StuInfoToString(row));
-            if(msg===true){
+            var msg = confirm("确认要删除这条记录吗？" + StuInfoToString(row));
+            if (msg === true) {
                 $table.bootstrapTable('remove', {
                     field: 'index',
                     values: [row.index]
                 });
                 deleteStudent(row);
             }
-        }
+        },
     };
+
+    function addRow(insertIndex, rowObj){
+        var insertR = rowObj;
+        $.each(insertR, function(name, value){
+            insertR[name] = '';
+        });
+
+        var params = {index:insertIndex + 1, row:insertR};
+        $table.bootstrapTable('insertRow', params);
+    }
+
     function operateFormatter(value, row, index) {
         return [
+            "<a class=\"like\" href='javascript:addRow(" + index + ", " + JSON.stringify(row) + ")' title=\"Add\">",
+            '<i class="glyphicon glyphicon-plus"></i>',
+            '</a>&nbsp;&nbsp;',
             '<a class="edit" href="javascript:void(0)" title="Edit">',
             '<i class="glyphicon glyphicon-edit"></i>',
             '</a>&nbsp;&nbsp;',
@@ -221,15 +243,44 @@
         $('#studentTable').bootstrapTable('resetView');
     });
 
-    function StuInfoToString(row){
-        var r="\n";
-        r+=("\n学号："+row.stuId);
-        r+=("\n姓名："+row.stuName);
-        r+=("\n性别："+row.stuSex);
-        r+=("\n生日："+row.stuBirth);
-        r+=("\n班级："+row.stuClass);
-        return r;
+    function update(obj, x) {
+        var table = document.getElementById("studentTable");
+//        for(e in trs){
+//            if(trs[e].getAttribute("data-index")==x)
+//                console.log(e);
+//        }
+        console.log(table.rows);
+//        for(var i=0;i<table.rows[x].cells.length-1;i++){
+//            var text = table.rows[x].cells[i].innerHTML;
+//            table.rows[x].cells[i].innerHTML = '<input class="input" name="input'+ x + '" type="text" value=""/>';
+//            var input = document.getElementsByName("input" + x);
+//            input[i].value = text;
+//            input[0].focus();
+//            input[0].select();
+//        }
+//        obj.innerHTML = "确定";
+//        obj.onclick = function onclick(event) {
+//            update_success(this,x)
+//        };
     }
+
+    function update_success(obj, x) {
+        var arr = [];
+        var table = $table;
+        var input = document.getElementsByName("input" + x);
+        for (var i = 0; i < table.rows[x].cells.length - 1; i++) {
+            var text = input[i].value;
+            arr.push(text);
+        }
+        for (var j = 0; j < arr.length; j++) {
+            table.rows[x].cells[j].innerHTML = arr[j];
+        }
+        obj.onclick = function onclick(event) {
+            update(this, x)
+        };
+        alert(arr + ",传到后端操作成功，刷新页面");
+    }
+
 </script>
 
 </body>

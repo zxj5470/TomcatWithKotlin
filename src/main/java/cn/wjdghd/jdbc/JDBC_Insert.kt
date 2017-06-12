@@ -25,7 +25,7 @@ fun insertStudentInfo(student: Student): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
     val sql="INSERT INTO tStudent VALUES('${student.stuId}','${student.stuName}','${student.stuSex}','${student.stuBirth}','${student.stuClass}')"
-    println(sql)
+
     val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
@@ -36,7 +36,7 @@ fun insertStuSelectInfo(selectTable: StuSelect): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
     val sql="INSERT INTO tStuSelect VALUES('${selectTable.selStuId}','${selectTable.selCouId}','${selectTable.selStuScore}')"
-    println(sql)
+
     val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
@@ -45,8 +45,9 @@ fun insertStuSelectInfo(selectTable: StuSelect): Boolean {
 fun insertTeacherInfo(teacher: Teacher): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val rs = statement.execute(
-            "INSERT INTO tFaculty VALUES('${teacher.teaId}','${teacher.teaName}',${teacher.teaLevel}','${teacher.teaTel}')")
+    val sql="INSERT INTO tFaculty VALUES('${teacher.teaId}','${teacher.teaName}',${teacher.teaLevel}','${teacher.teaTel}')"
+
+    val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
 }
@@ -54,8 +55,9 @@ fun insertTeacherInfo(teacher: Teacher): Boolean {
 fun insertTeaSelectInfo(teachSelect: TeachSelect):Boolean{
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val rs = statement.execute(
-            "INSERT INTO tFaculty VALUES('${teachSelect.teaCouId}','${teachSelect.teaCouId}')")
+    val sql="INSERT INTO tFaculty VALUES('${teachSelect.teaCouId}','${teachSelect.teaCouId}')"
+
+    val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
 }
