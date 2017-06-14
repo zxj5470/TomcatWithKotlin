@@ -39,7 +39,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#">选项</a></li>
                 <li><a href="#">关于</a></li>
-                <li><a href="#">退出</a></li>
+                <li><a href="login.jsp">退出</a></li>
             </ul>
         </div>
     </div>
@@ -48,7 +48,7 @@
 <div class="container-fluid">
     <div class="row"><br/>
         <div class="col-sm-2 col-md-2 sidebar">
-            <ul class="nav nav-sidebar"></br>
+            <ul class="nav nav-sidebar"><p></p>
                 <li><a href="#student" class="btn btn-default" data-toggle="tab" onclick="todo()">学生管理</a></li>
                 <p></p>
                 <p></p>
@@ -85,12 +85,12 @@
                        class="table">
                     <thead>
                     <tr>
-                        <th data-field="index" data-editable="false"></th>
-                        <th data-field="stuId" data-editable="text">学号</th>
-                        <th data-field="stuName" data-editable="text">姓名</th>
-                        <th data-field="stuSex" data-editable="select">性别</th>
-                        <th data-field="stuBirth" data-editable="selectDate">生日</th>
-                        <th data-field="stuClass" data-editable="text">班级</th>
+                        <%--<th data-field="index" data-editable="false"></th>--%>
+                        <%--<th data-field="stuId" data-editable="text">学号</th>--%>
+                        <%--<th data-field="stuName" data-editable="text">姓名</th>--%>
+                        <%--<th data-field="stuSex" data-editable="select">性别</th>--%>
+                        <%--<th data-field="stuBirth" data-editable="selectDate">生日</th>--%>
+                        <%--<th data-field="stuClass" data-editable="text">班级</th>--%>
                     </tr>
                     </thead>
                 </table>
@@ -111,7 +111,8 @@
 </div>
 <script>
     var curRow = {};
-
+    var obj;
+    var oldID;
     var $table = $('#studentTable');
 
     $(function () {
@@ -129,9 +130,10 @@
         });
     });
 
+
     function setOption(ob) {
         return {
-            url: ob,
+            data: ob,
             editable: true,
             clickToSelect: true,
             cache: false,
@@ -155,10 +157,10 @@
                         align: "center",
                         order: "asc",
                         sortable: "true",
-                        formatter:simpleTextFormatter
+                        formatter: simpleTextFormatter
                     },
                     {
-                        field: "stuId", title: "学号", align: "center", sortable: "true"
+                        field: "stuId", title: "学号", align: "center", sortable: "true", formatter: simpleTextFormatter
                     },
                     {
                         field: "stuSex", title: "性别", align: "center", sortable: "true"
@@ -175,28 +177,32 @@
 
                 ]
             ],
-            onClickRow: function (row) {
+            onClickRow: function (field, value, row, $element) {
                 curRow = row;
-//                console.log(row);
-            },
-            onDblClickCell: function (field, value, row, $element) {
-                console.log(field);
-                console.log(value);
-                console.log(row);
-                console.log($element);
             }
         };
     }
 
     window.operateEvents = {
         'click .edit': function (e, value, row, index) {
-            isEditing=!isEditing;
+            if (isEditing) {
+                isEditing = !isEditing;
+                $table.bootstrapTable('refresh')
+            } else {
+                isEditing = !isEditing;
+                sendObject(obj[0],'tStudent');
+                $table.bootstrapTable('refresh')
+            }
+            $table.bootstrapTable(setOption(obj));
+            $table.bootstrapTable('load', obj);
+
+            console.log($table.bootstrapTable('getData'));
+
 //            update(this, index);
-            console.log(this);
-            $table.bootstrapTable('refresh')
+//            console.log(this);
         },
         'click .remove': function (e, value, row, index) {
-            var msg = confirm("确认要删除这条记录吗？" + StuInfoToString(row));
+            var msg = confirm("确认要删除这条记录吗？\n请注意数据库中也会将该条内容删除……" + StuInfoToString(row));
             if (msg === true) {
                 $table.bootstrapTable('remove', {
                     field: 'index',
@@ -204,22 +210,22 @@
                 });
                 deleteStudent(row);
             }
-        },
+        }
     };
 
-    function addRow(insertIndex, rowObj){
+    function addRow(insertIndex, rowObj) {
         var insertR = rowObj;
-        $.each(insertR, function(name, value){
+        $.each(insertR, function (name, value) {
             insertR[name] = '';
         });
 
-        var params = {index:insertIndex + 1, row:insertR};
+        var params = {index: insertIndex + 1, row: insertR};
         $table.bootstrapTable('insertRow', params);
     }
 
     function operateFormatter(value, row, index) {
         return [
-            "<a class=\"like\" href='javascript:addRow(" + index + ", " + JSON.stringify(row) + ")' title=\"Add\">",
+            "<a class=\"add\" href='javascript:addRow(" + index + ", " + JSON.stringify(row) + ")' title=\"Add\">",
             '<i class="glyphicon glyphicon-plus"></i>',
             '</a>&nbsp;&nbsp;',
             '<a class="edit" href="javascript:void(0)" title="Edit">',
@@ -231,38 +237,31 @@
         ].join('');
     }
 
+    $('input').on('keyDown',function (e) {
+        console.log(e);
+    });
+
     function todo() {
-        var url = 'http://localhost:8080/query?table=tStudent';
-        $table.bootstrapTable(setOption(url));
-        $table.bootstrapTable('refresh', {
-            url: url
+        $.ajax({
+            url: '/query',
+            data: {table: 'tStudent'},
+            success: function (data) {
+                obj = (JSON.parse(data)).results;
+//                console.log(obj);
+                $table.bootstrapTable(setOption(obj));
+                $table.bootstrapTable('load', obj);
+//                $table.bootstrapTable('refresh');
+            }
         });
+//        $table.bootstrapTable(setOption(url));
+//        $table.bootstrapTable('load', {
+//            data: obj
+//        });
     }
 
     $(window).resize(function () {
         $('#studentTable').bootstrapTable('resetView');
     });
-
-    function update(obj, x) {
-        var table = document.getElementById("studentTable");
-//        for(e in trs){
-//            if(trs[e].getAttribute("data-index")==x)
-//                console.log(e);
-//        }
-        console.log(table.rows);
-//        for(var i=0;i<table.rows[x].cells.length-1;i++){
-//            var text = table.rows[x].cells[i].innerHTML;
-//            table.rows[x].cells[i].innerHTML = '<input class="input" name="input'+ x + '" type="text" value=""/>';
-//            var input = document.getElementsByName("input" + x);
-//            input[i].value = text;
-//            input[0].focus();
-//            input[0].select();
-//        }
-//        obj.innerHTML = "确定";
-//        obj.onclick = function onclick(event) {
-//            update_success(this,x)
-//        };
-    }
 
     function update_success(obj, x) {
         var arr = [];

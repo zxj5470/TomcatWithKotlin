@@ -11,7 +11,7 @@ fun updateCourseInfo(c: Course, ID: String): Boolean {
             "couId='${c.couId}',couName='${c.couName}'," +
             "couScore='${c.couScore}',couTime='${c.couTime}'," +
             "couCurNum='${c.couCurNum}',couMaxNum='${c.couMaxNum}' " +
-            "WHERE ID='$ID'"
+            "WHERE couId='$ID'"
     val rs = statement.execute(sql)
     return rs
 }
@@ -22,7 +22,7 @@ fun updateFacultyInfo(faculty: Faculty, ID: String): Boolean {
     val sql = "UPDATE tFaculty SET " +
             "facId='${faculty.facId}',facName='${faculty.facName}'," +
             "facTel='${faculty.facTel}',facBoss='${faculty.facBoss}'" +
-            "WHERE ID='$ID'"
+            "WHERE facId='$ID'"
     val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
@@ -31,11 +31,11 @@ fun updateFacultyInfo(faculty: Faculty, ID: String): Boolean {
 fun updateStudentInfo(student: Student, ID: String): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val sql = "UPDATE tStudent SET" +
+    val sql = "UPDATE tStudent SET " +
             "stuId='${student.stuId}',stuName='${student.stuName}'," +
             "stuSex='${student.stuSex}',stuBirth='${student.stuBirth}'," +
             "stuClass='${student.stuClass}'" +
-            "WHERE ID='$ID'"
+            "WHERE stuId='$ID'"
     val rs = statement.execute(sql)
     JDBCUtil.closeConn()
     return rs
@@ -44,7 +44,7 @@ fun updateStudentInfo(student: Student, ID: String): Boolean {
 fun updateStuSelectInfo(selectTable: StuSelect, oldSelStuId: String, oldSelCouId: String): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val sql = "UPDATE tStuSelect SET" +
+    val sql = "UPDATE tStuSelect SET " +
             "selStuId='${selectTable.selStuId}'," +
             "selCouId='${selectTable.selCouId}'," +
             "selStuScore='${selectTable.selStuScore}'" +
@@ -75,7 +75,7 @@ fun updateTeacherInfo(teacher: Teacher,ID: String): Boolean {
 fun updateTeaSelectInfo(teachSelect: TeachSelect,oldTeaTeaId: String,oldTeaCouId: String): Boolean {
     JDBCUtil.getConn()
     val statement = (JDBCUtil.dbConn as Connection).createStatement()
-    val sql="UPDATE tTeaSelect SET" +
+    val sql="UPDATE tTeaSelect SET " +
             "teaTeaId='${teachSelect.teaTeaId}'," +
             "teaCouId='${teachSelect.teaCouId}'" +
             "WHERE teaTeaId='$oldTeaTeaId' AND teaCouId='$oldTeaCouId')"

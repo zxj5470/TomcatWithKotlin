@@ -11,6 +11,5 @@ fun main(args: Array<String>) {
 //    for(e in s){
 //        print(e)
 //    }
-
 }
 

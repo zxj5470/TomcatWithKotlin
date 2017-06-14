@@ -32,6 +32,7 @@ class Main : HttpServlet() {
         @Throws(ServletException::class, IOException::class)
         override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
             response.setPostHeadersForPage()
+            updateTableRow(request,response)
         }
     }
 
@@ -41,6 +42,14 @@ class Main : HttpServlet() {
         override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
             response.setPostHeadersForPage()
             deleteTableRow(request, response)
+        }
+    }
+
+    @WebServlet("/login")
+    class Login : HttpServlet() {
+        @Throws(ServletException::class, IOException::class)
+        override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
+            response.setPostHeadersForPage()
         }
     }
 }

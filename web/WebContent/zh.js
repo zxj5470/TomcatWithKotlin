@@ -1,5 +1,10 @@
 var isEditing = false;
-
+/** @namespace row.stuName */
+/** @namespace row.stuSex */
+/** @namespace row.stuBirth */
+/** @namespace row.stuClass*/
+/** @return {string}
+ */
 function StuInfoToString(row) {
     var r = "\n";
     r += ("\n姓名：" + row.stuName);
@@ -21,13 +26,31 @@ function deleteStudent(row) {
     });
 }
 
-function on() {
-    console.log(this.value);
+function on(value,self) {
+    console.log(value);
+    console.log(curRow);
+    var i=(self.getAttribute("i"));
+    obj[i][curRow]=value;
 }
 
-function simpleTextFormatter(value, row, index) {
+function simpleTextFormatter(value, index) {
     if (isEditing)
-        return '<input type="text" name="" class="form-control input-sm" value="'+value+'"'+' onchange="on()">';
+        return '<input type="text" name="" class="form-control input-sm" i="'+index+'" value="' + value + '"' + ' oninput="on(value,this)">';
     else return value;
 }
 
+function sendObject(obj,table,oldID) {
+    for(var i in obj){
+        obj[i].table=table;
+        obj[i].ID=oldID;
+        $.ajax({
+            url: '/update',
+            method: 'POST',
+            data: obj[i],
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+}
