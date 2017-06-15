@@ -9,7 +9,9 @@ data class Student(var stuId: String,
 data class Teacher(var teaId: String,
                    var teaName: String,
                    var teaLevel: String,
-                   var teaTel: String)
+                   var teaTel: String,
+                   var teaFac:String
+                   )
 
 data class Course(var couId: String,
                   var couName: String,
@@ -29,3 +31,5 @@ data class StuSelect(var selStuId: String,
 
 data class TeachSelect(var teaTeaId: String,
                        var teaCouId: String)
+
+data class User(var resu:String,var pwaosrsd:String,var status:Int)

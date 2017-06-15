@@ -1,7 +1,6 @@
 package cn.wjdghd
 
 import cn.wjdghd.dao.*
-
 import java.io.IOException
 import javax.servlet.ServletException
 import javax.servlet.annotation.WebServlet
@@ -50,6 +49,7 @@ class Main : HttpServlet() {
         @Throws(ServletException::class, IOException::class)
         override fun doPost(request: HttpServletRequest, response: HttpServletResponse) {
             response.setPostHeadersForPage()
+            loginAndResponse(request,response)
         }
     }
 }

@@ -33,13 +33,13 @@ fun insertTableRow(request: HttpServletRequest, response: HttpServletResponse) {
         "tStudent" -> {
             val stuId = request.getParameter("stuId") as String? ?: "20000000000"
             val stuName = request.getParameter("stuName") as String? ?: "null"
-            val stuSex = request.getParameter("stuSex") as String? ?: "男"
+            var stuSex = request.getParameter("stuSex") as String? ?: "男"
+            if (request.getParameter("stuSex") == "") stuSex = "男"
             val stuBirth = request.getParameter("stuBirth") as String? ?: "19700101"
             val stuClass = request.getParameter("stuClass") as String? ?: "010101"
 
             val student = Student(stuId, stuName, stuSex, stuBirth, stuClass)
             insertStudentInfo(student)
-
             response.writer.println(student)
         }
         "tStuSelect" -> {
@@ -58,7 +58,7 @@ fun insertTableRow(request: HttpServletRequest, response: HttpServletResponse) {
             val teaLevel = request.getParameter("teaLevel") as String? ?: ""
             val teaTel = request.getParameter("teaTel") as String? ?: ""
 
-            val teacher = Teacher(teaId, teaName, teaLevel, teaTel)
+            val teacher = Teacher(teaId, teaName, teaLevel, teaTel,teaId)
             insertTeacherInfo(teacher)
             response.writer.println(teacher)
         }

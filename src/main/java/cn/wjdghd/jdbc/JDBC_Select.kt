@@ -43,3 +43,15 @@ fun selectFromAll(tableName: String): JsonObject {
     JDBCUtil.closeConn()
     return obj
 }
+
+fun selectLogin(resu:String,pswd:String):String?{
+    JDBCUtil.getConn()
+    val statement = (JDBCUtil.dbConn as Connection).createStatement()
+    val rs = statement.executeQuery("select * from tUsers where resu='$resu' and pwaosrsd='$pswd'")
+    var result:String?=null
+    if(rs.next()){
+        result=rs.getString(1)
+    }
+    JDBCUtil.closeConn()
+    return result?:"failed"
+}

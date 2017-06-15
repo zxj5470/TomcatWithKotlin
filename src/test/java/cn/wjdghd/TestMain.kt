@@ -1,5 +1,7 @@
 package cn.wjdghd
 
+import cn.wjdghd.jdbc.selectLogin
+
 //1110001	软工教师1	系主任	13011110001
 
 fun main(args: Array<String>) {
@@ -11,5 +13,6 @@ fun main(args: Array<String>) {
 //    for(e in s){
 //        print(e)
 //    }
+    println(selectLogin("1215001295","123333"))
 }
 

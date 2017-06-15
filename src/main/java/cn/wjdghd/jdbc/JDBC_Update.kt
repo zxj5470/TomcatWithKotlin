@@ -13,6 +13,7 @@ fun updateCourseInfo(c: Course, ID: String): Boolean {
             "couCurNum='${c.couCurNum}',couMaxNum='${c.couMaxNum}' " +
             "WHERE couId='$ID'"
     val rs = statement.execute(sql)
+    println(sql)
     return rs
 }
 
@@ -24,6 +25,7 @@ fun updateFacultyInfo(faculty: Faculty, ID: String): Boolean {
             "facTel='${faculty.facTel}',facBoss='${faculty.facBoss}'" +
             "WHERE facId='$ID'"
     val rs = statement.execute(sql)
+    println(sql)
     JDBCUtil.closeConn()
     return rs
 }
@@ -37,6 +39,7 @@ fun updateStudentInfo(student: Student, ID: String): Boolean {
             "stuClass='${student.stuClass}'" +
             "WHERE stuId='$ID'"
     val rs = statement.execute(sql)
+    println(sql)
     JDBCUtil.closeConn()
     return rs
 }
@@ -50,6 +53,7 @@ fun updateStuSelectInfo(selectTable: StuSelect, oldSelStuId: String, oldSelCouId
             "selStuScore='${selectTable.selStuScore}'" +
             "WHERE selStuId='$oldSelStuId' AND selCouId='$oldSelCouId'"
     val rs = statement.execute(sql)
+    println(sql)
     JDBCUtil.closeConn()
     return rs
 }
@@ -68,6 +72,7 @@ fun updateTeacherInfo(teacher: Teacher,ID: String): Boolean {
             "teaTel='${teacher.teaTel}'" +
             "WHERE teaId='$ID'"
     val rs = statement.execute(sql)
+    println(sql)
     JDBCUtil.closeConn()
     return rs
 }
@@ -80,6 +85,7 @@ fun updateTeaSelectInfo(teachSelect: TeachSelect,oldTeaTeaId: String,oldTeaCouId
             "teaCouId='${teachSelect.teaCouId}'" +
             "WHERE teaTeaId='$oldTeaTeaId' AND teaCouId='$oldTeaCouId')"
     val rs = statement.execute(sql)
+    println(sql)
     JDBCUtil.closeConn()
     return rs
 }
