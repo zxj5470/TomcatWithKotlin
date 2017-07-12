@@ -61,9 +61,10 @@ fun updateTableRow(request: HttpServletRequest, response: HttpServletResponse) {
             val teaName = request.getParameter("teaName") as String? ?: ""
             val teaLevel = request.getParameter("teaLevel") as String? ?: ""
             val teaTel = request.getParameter("teaTel") as String? ?: ""
+            val teaFac = request.getParameter("teaFac") as String? ?: ""
             val ID = request.getParameter("ID") as String? ?: ""
 
-            val teacher = Teacher(teaId, teaName, teaLevel, teaTel)
+            val teacher = Teacher(teaId, teaName, teaLevel, teaTel,teaFac)
 
             updateTeacherInfo(teacher, ID)
             response.writer.println(teacher)
